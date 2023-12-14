@@ -91,4 +91,23 @@ def get_abbreviations_point_from_abbreviation(full_word, abbreviations):
 
     return abbr_points
 
-print(get_abbreviations_point_from_abbreviation(["GLORY"], ['GLO', 'GLR', 'GLY', 'GOR', 'GOY', 'GRY']))
+
+# import values.txt and convert to dictionary
+
+def values_to_dictionary(file_path, delimiter = ' '):
+    values_dict = {}
+    with open(file_path, 'r') as file:
+        for line in file:
+            key, value = map(str.strip, line.split(delimiter,1))
+            values_dict [key] = value
+    return values_dict
+
+print(values_to_dictionary("values.txt"))
+
+
+
+
+
+
+
+#print(get_abbreviations_point_from_abbreviation(["GLORY"], ['GLO', 'GLR', 'GLY', 'GOR', 'GOY', 'GRY']))
