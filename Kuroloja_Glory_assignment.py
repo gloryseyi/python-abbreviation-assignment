@@ -93,21 +93,20 @@ def get_abbreviations_point_from_abbreviation(full_word, abbreviations):
 
 
 # import values.txt and convert to dictionary
-
-def values_to_dictionary(file_path, delimiter = ' '):
-    values_dict = {}
+def file_to_dictionary(file_path, delimiter= ' '):
+    file_dict = {}
     with open(file_path, 'r') as file:
         for line in file:
             key, value = map(str.strip, line.split(delimiter,1))
-            values_dict [key] = value
-    return values_dict
+            file_dict [key] = value
+    return file_dict
 
-print(values_to_dictionary("values.txt"))
+# import the tree.txt file and convert to array
+def file_to_array(file_path):
+    with open(file_path, 'r') as file:
+        array_file = file.read().splitlines()
+        return array_file
 
-
-
-
-
-
+print(file_to_array("trees.txt"))
 
 #print(get_abbreviations_point_from_abbreviation(["GLORY"], ['GLO', 'GLR', 'GLY', 'GOR', 'GOY', 'GRY']))
