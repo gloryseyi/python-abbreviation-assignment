@@ -1,3 +1,3 @@
 import Kuroloja_Glory_assignment
 
-Kuroloja_Glory_assignment.main()
+kuroloja_glory_assignment.main()
