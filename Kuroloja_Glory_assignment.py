@@ -1,8 +1,7 @@
-# remove appostrophes and other non-letter characters and
-# break apart hyphenated words
 from collections import defaultdict
 
-
+# remove appostrophes and other non-letter characters and
+# break apart hyphenated words
 def normalise_word(word):
     # Select all the characters that are either letters or hyphen
     select_word = ''.join(c for c in word if c.isalpha() or c.isspace() or c == '-')
@@ -141,7 +140,7 @@ def main():
         # clean up each word
         normalised_words = []
         abbreviation_result = []
-        abbreviations = defaultdict(int)
+        abbreviations = defaultdict(int) # use default dict to access possible inexistent dictionary key without throwing error/exception
         normalised_words.extend(normalise_word(tree))
         name_in_sequence = ''
         for normalised_word in normalised_words:
