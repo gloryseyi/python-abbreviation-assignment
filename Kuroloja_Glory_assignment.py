@@ -110,50 +110,62 @@ def read_alphabet_values_to_dictionary(file_path):
             file_dict[key] = int(value)
     return file_dict
 
-# import the tree.txt file and convert to array
+# import the text file and convert to array
 def read_tree_names_to_string_array(file_path):
     with open(file_path, 'r') as file:
         array_file = file.read().splitlines()
         return array_file
 
-# this function is to clean up the main function. It gets the abbeviation and its point by first normalising the word to abbreviate,
-# get the three letter abbreviation from the word, then get the point of the abbreviation
-def get_abbreviation_points(letter_value_points, normalised_words, name_in_sequence, normalised_word):
-    word_name = replace_last_word(normalised_word)
-    name_in_sequence += word_name
-    three_char_abbreviations = get_three_letter_abbreviations(name_in_sequence)
-    abbreviation_points = get_abbreviations_point_from_abbreviation(normalised_words, three_char_abbreviations, letter_value_points)
-    return abbreviation_points
-
 # select abbreviation with the minimum total value    
 def get_best_value(abbreviation_result):
-    min_value = min(abbreviation_result, key=lambda x: x[1])[1]
-    best_per_value = [abbr_result for abbr_result in abbreviation_result if abbr_result[1] == min_value]
+    # List to store distinct results
+    distinct_result = []
+
+    # Check for distinct result based on content
+    for d in abbreviation_result:
+        if d not in distinct_result:
+            distinct_result.append(d)
+
+    #get minimum result point
+    min_value = min(distinct_result, key=lambda x: x[1])[1]
+    best_per_value = [abbr_result for abbr_result in distinct_result if abbr_result[1] == min_value]
     return best_per_value
 
 def main():
+    file_name = str(input("what is your file name? "))
+    output_file_name = f'kuroloja_{file_name}_abbrevs.txt'
+    output_text = ""
      # read value point
     letter_value_points = read_alphabet_values_to_dictionary("values.txt")
     # import the tree names
-    trees = read_tree_names_to_string_array('trees.txt')
-    for tree in trees:
+    input_file_values = read_tree_names_to_string_array(file_name + ".txt")
+    for input_name in input_file_values:
         # clean up each word
         normalised_words = []
         abbreviation_result = []
         abbreviations = defaultdict(int) # use default dict to access possible inexistent dictionary key without throwing error/exception
-        normalised_words.extend(normalise_word(tree))
+        normalised_words.extend(normalise_word(input_name))
         name_in_sequence = ''
         for normalised_word in normalised_words:
-            abbreviation_points = get_abbreviation_points(letter_value_points, normalised_words, name_in_sequence, normalised_word)
+            word_name = replace_last_word(normalised_word)
+            name_in_sequence += word_name
+            three_char_abbreviations = get_three_letter_abbreviations(name_in_sequence)
+            abbreviation_points = get_abbreviations_point_from_abbreviation(normalised_words, three_char_abbreviations, letter_value_points)
             for key, value in abbreviation_points.items():
                 if key not in abbreviations:
                     abbreviations[key] = value
             abbreviation_result.extend(abbreviations.items())
+        
+        output_text += input_name + "\n"
         if not abbreviation_result:
-            print(tree, "---")
+            output_text += "\n\n"
         else:
             best_per_value = get_best_value(abbreviation_result)
-            print(tree, best_per_value)
+            for best in best_per_value:
+                output_text += best[0] + " "
+        output_text += "\n"
+    with open(output_file_name, 'w') as file:
+        file.write(output_text)
 
 if __name__ == "__main__":
     main()
